@@ -1,32 +1,19 @@
 version: '3'
 services:
-  # Nginx
-  raharuapp_web:
+  # Httpd
+  raharuapp_httpd:
     build:
       context: ./
-      dockerfile: ./web/Dockerfile
-    ports:
-      - "80:80"
-    depends_on:
-      - raharuapp_app
-    volumes:
-      - ./data:/var/www/html
-
-  # php-fpm-phalocn
-  raharuapp_app:
-    build:
-      context: ./
-      dockerfile: ./app/Dockerfile
+      dockerfile: ./httpd/Dockerfile
     env_file: .env
     environment:
       MYSQL_DSN: raharuapp_db
+    ports:
+      - "80:8080"
     depends_on:
       - raharuapp_db
     volumes:
       - ./data:/var/www/html
-      - ./logs:/var/log/nginx
-      - ./app/time_zone.ini:/usr/local/etc/php/conf.d/time_zone.ini
-
   # MySQL
   raharuapp_db:
     image: mysql:5.7.14

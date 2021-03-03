@@ -1,8 +1,15 @@
 # ベースイメージ
-FROM mileschou/phalcon:7.2-fpm-alpine
+FROM mileschou/phalcon:7.2-apache
 
 # 管理者
 MAINTAINER raharu0425<raharu0425@gmail.com>
+
+RUN apt-get update \
+  && apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev libmcrypt-dev \
+  && mv /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled
+
+# mod_rewriteを 有効に
+RUN /bin/sh -c a2enmod rewrite
 
 ARG PSR_VERSION=1.0.0
 ARG PHALCON_VERSION=3.4.5
@@ -31,11 +38,11 @@ RUN set -xe && \
 RUN docker-php-ext-install pdo_mysql mysqli mbstring
 
 # YAMLの追加
-RUN apk add --no-cache \
-    g++ make autoconf yaml-dev curl shadow && \
+RUN apt update
+RUN apt-get install -y --no-install-recommends  \
+    g++ make autoconf curl libyaml-dev && \
     pecl channel-update pecl.php.net && \
     pecl install yaml-2.0.0 && docker-php-ext-enable yaml
-
 
 # ログ先
 RUN mkdir -p /var/log/nginx \
@@ -45,14 +52,17 @@ RUN mkdir -p /var/log/nginx \
 # install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN \
-      addgroup -g 1003 -S y_watanabe_newstech && \
-      adduser -u 1002 -S y_watanabe_newstech -G y_watanabe_newstech
-
-RUN gpasswd -a y_watanabe_newstech root
-
-USER y_watanabe_newstech
-
 # ソースを含める
 ADD data /var/www/html/
 
+# Viewフォルダの権限変更
+RUN chmod -R 777 /var/www/html/source/app/modules/backend/views
+
+# 設定ファイルのコピー
+COPY ./httpd/phalcon.conf /etc/apache2/sites-available/
+COPY ./httpd/ports.conf /etc/apache2/
+
+# 認証ファイル
+COPY ./httpd/client-cert.pem /etc/cert/client-cert.pem
+COPY ./httpd/client-key.pem /etc/cert/client-key.pem
+COPY ./httpd/server-ca.pem /etc/cert/server-ca.pem
