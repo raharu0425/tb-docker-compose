@@ -62,7 +62,3 @@ RUN chmod -R 777 /var/www/html/source/app/modules/backend/views
 COPY ./httpd/phalcon.conf /etc/apache2/sites-available/
 COPY ./httpd/ports.conf /etc/apache2/
 
-# 認証ファイル
-COPY ./httpd/client-cert.pem /etc/cert/client-cert.pem
-COPY ./httpd/client-key.pem /etc/cert/client-key.pem
-COPY ./httpd/server-ca.pem /etc/cert/server-ca.pem
