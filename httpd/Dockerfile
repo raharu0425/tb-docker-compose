@@ -49,6 +49,10 @@ RUN mkdir -p /var/log/nginx \
     && chmod -R 777 /var/log/nginx \
     && ln -s /dev/stderr /var/log/nginx/error.log
 
+# xdebugをインスール
+RUN pecl install xdebug && \
+    docker-php-ext-enable xdebug
+
 # install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
