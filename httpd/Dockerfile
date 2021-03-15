@@ -59,6 +59,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # ソースを含める
 ADD data /var/www/html/
 
+# ソースを含める
+COPY ./httpd/time_zone.ini /usr/local/etc/php/conf.d/time_zone.ini
+
 # Viewフォルダの権限変更
 RUN chmod -R 777 /var/www/html/source/app/modules/backend/views
 
