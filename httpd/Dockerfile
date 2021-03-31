@@ -56,6 +56,12 @@ RUN pecl install xdebug && \
 # install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+# install Symbol-cli
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt install -y nodejs
+RUN npm install -g -y npm@latest
+RUN npm install -g -y symbol-cli
+
 # ソースを含める
 ADD data /var/www/html/
 
