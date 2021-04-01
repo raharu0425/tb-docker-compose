@@ -70,6 +70,7 @@ COPY ./httpd/time_zone.ini /usr/local/etc/php/conf.d/time_zone.ini
 
 # Viewフォルダの権限変更
 RUN chmod -R 777 /var/www/html/source/app/modules/backend/views
+RUN chmod -R 777 /var/www/html/source/app/modules/symbol/views
 
 # 設定ファイルのコピー
 COPY ./httpd/phalcon.conf /etc/apache2/sites-available/
