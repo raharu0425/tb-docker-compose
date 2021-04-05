@@ -5,7 +5,7 @@ FROM mileschou/phalcon:7.2-apache
 MAINTAINER raharu0425<raharu0425@gmail.com>
 
 RUN apt-get update \
-  && apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev libmcrypt-dev \
+  && apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev libmcrypt-dev git zip unzip \
   && mv /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled
 
 # mod_rewriteを 有効に
