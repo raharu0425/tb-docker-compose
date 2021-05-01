@@ -16,7 +16,8 @@ services:
       - ./data:/var/www/html
   # MySQL
   raharuapp_db:
-    image: mysql:5.7.14
+    image: mysql:5.7
+    platform: linux/x86_64
     env_file: .env
     ports:
       - "3306:3306"
